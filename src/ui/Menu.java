@@ -11,32 +11,26 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-
 public class Menu extends VBox {
-
-
     private Button newButton, loadButton, quitButton;
 
+    /**
+     * TODO: construct the Menu pane
+     * This class is an extension of VBox with the following children:
+     *  - A Label object to display the title "DISCOUNT CIVILIZATION"
+     *  - newButton: a button with text "New Game"
+     *  - loadButton: a button with text "Load Game"
+     *  - quitButton: a button with text "Quit"
+     *
+     * Note that the handlers of the buttons are set in the initHandlers() method in GameApplication
+     */
     public Menu() {
-        /**
-         * TODO: construct the Menu pane
-         * This class is an extension of VBox with the following children:
-         *  - A Label object to display the title "DISCOUNT CIVILIZATION"
-         *  - newButton: a button with text "New Game"
-         *  - loadButton: a button with text "Load Game"
-         *  - quitButton: a button with text "Quit"
-         *
-         * Note that the handlers of the buttons are set in the initHandlers() method in GameApplication
-         */
+        Label title = new Label("DISCOUNT CIVILIZATION");
+        Button newButton = new Button("New Game");
+        Button loadButton = new Button("Load Game");
+        Button quitButton = new Button("Quit");
 
-
-
-
-
-
-
-
-
+        getChildren().addAll(title, newButton, loadButton, quitButton);
         setId("menu");
     }
 
