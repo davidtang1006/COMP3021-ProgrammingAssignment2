@@ -13,7 +13,6 @@ import pa1.Player;
 import java.util.List;
 
 public class GameCanvas extends StackPane {
-
     // Indices of the canvas layers
     private static final int BACKGROUND_LAYER = 0;
     private static final int LINE_LAYER = 1;
@@ -40,9 +39,8 @@ public class GameCanvas extends StackPane {
     private InfoBar infoBar;
 
     public GameCanvas(GameMap gameMap, InfoBar infoBar) {
-        /**
+        /*
          * TODO: construct a game canvas
-         *
          *
          * The game canvas is a extension of a stack pane where different canvases are layered
          * to create a graphical representation of a game map
@@ -70,23 +68,29 @@ public class GameCanvas extends StackPane {
          *    canvasLayers[TEXT_LAYER]
          */
 
+        // 1
+        double canvasWidth = gameMap.getWidth() * CELL_WIDTH;
+        double canvasHeight = gameMap.getHeight() * CELL_HEIGHT;
 
+        // 2
+        this.gameMap = gameMap;
+        this.infoBar = infoBar; // The additional line
 
+        // 3
+        canvasLayers = new Canvas[5];
+        for (int i = 0; i < 5; i++) {
+            canvasLayers[i] = new Canvas(canvasWidth, canvasHeight);
+        }
 
+        // 4
+        background = new Image("background.png", canvasWidth, canvasHeight, false, false);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        // 5
+        getChildren().add(canvasLayers[BACKGROUND_LAYER]);
+        getChildren().add(canvasLayers[LINE_LAYER]);
+        getChildren().add(canvasLayers[ICON_LAYER]);
+        getChildren().add(canvasLayers[FLAG_LAYER]);
+        getChildren().add(canvasLayers[TEXT_LAYER]);
 
         // set a mouse click event handler so that when a cell is clicked, the corresponding city
         // in the info bar is selected.
@@ -98,8 +102,7 @@ public class GameCanvas extends StackPane {
     }
 
     private void drawCity(City city, Image flag) {
-
-        /**
+        /*
          * TODO: draw the icon, name and flag of a city
          *
          * 1. Draw the city icon on the icon layer, i.e., canvasLayers[ICON_LAYER]
@@ -119,27 +122,26 @@ public class GameCanvas extends StackPane {
          *    - Use strokeText() of graphics context to draw text
          *
          * 3. Draw the top-left flag on the flag layer, i.e., canvasLayers[FLAG_LAYER]
-         *
          */
 
+        // 1
+        Image img = city.getImage(CELL_WIDTH, CELL_HEIGHT);
+        int cityX = toCanvasCoordinates(gameMap.getCityLocation(city)).getX(); // The changed line
+        int cityY = toCanvasCoordinates(gameMap.getCityLocation(city)).getY(); // The changed line
+        GraphicsContext graphicsContexts = canvasLayers[ICON_LAYER].getGraphicsContext2D();
+        graphicsContexts.drawImage(img, cityX, cityY);
 
+        // 2
+        graphicsContexts = canvasLayers[TEXT_LAYER].getGraphicsContext2D();
+        graphicsContexts.strokeText(city.getName(), cityX + Math.round((float)CELL_WIDTH / 4), cityY);
 
-
-
-
-
-
-
-
-
-
-
-
+        // 3
+        graphicsContexts = canvasLayers[FLAG_LAYER].getGraphicsContext2D();
+        graphicsContexts.drawImage(flag, cityX, cityY);
     }
 
     private void drawLinesBetweenCities(City a, City b) {
-
-        /**
+        /*
          * TODO: draw a line between two cities
          * If both cities belong to the same owner, draw a light green line, else draw a red line.
          * You need to make sure the line's endpoints are at the center of the cells
@@ -150,25 +152,23 @@ public class GameCanvas extends StackPane {
          * - You can set the line color using the setStroke() method of GraphicsContext,
          *   e.g., gc.setStroke(Color.LIGHTGREEN); suppose gc is the GraphicsContext object of the canvas
          * - Use the strokeLine() method of GraphicsContext to draw a line
-         *
          */
+        int cityAX = toCanvasCoordinates(gameMap.getCityLocation(a)).getX() + CELL_WIDTH / 2;
+        int cityAY = toCanvasCoordinates(gameMap.getCityLocation(a)).getY() + CELL_HEIGHT / 2;
+        int cityBX = toCanvasCoordinates(gameMap.getCityLocation(b)).getX() + CELL_WIDTH / 2;
+        int cityBY = toCanvasCoordinates(gameMap.getCityLocation(b)).getY() + CELL_HEIGHT / 2;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        GraphicsContext graphicsContexts = canvasLayers[LINE_LAYER].getGraphicsContext2D();
+        if (gameMap.getCityOwner(a) == gameMap.getCityOwner(b)) {
+            graphicsContexts.setStroke(Color.LIGHTGREEN);
+            graphicsContexts.setLineWidth(3);
+            graphicsContexts.strokeLine(cityAX, cityAY, cityBX, cityBY);
+        } else {
+            graphicsContexts.setStroke(Color.RED);
+            graphicsContexts.setLineWidth(3);
+            graphicsContexts.strokeLine(cityAX, cityAY, cityBX, cityBY);
+        }
     }
-
 
     private static Cell toCanvasCoordinates(Cell cell) {
         return new Cell(cell.getX() * CELL_WIDTH, cell.getY() * CELL_HEIGHT);
@@ -196,6 +196,5 @@ public class GameCanvas extends StackPane {
                 }
             }
         }
-
     }
 }

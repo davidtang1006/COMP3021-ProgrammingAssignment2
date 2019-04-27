@@ -17,18 +17,18 @@ public class Menu extends VBox {
     /**
      * TODO: construct the Menu pane
      * This class is an extension of VBox with the following children:
-     *  - A Label object to display the title "DISCOUNT CIVILIZATION"
-     *  - newButton: a button with text "New Game"
-     *  - loadButton: a button with text "Load Game"
-     *  - quitButton: a button with text "Quit"
-     *
+     * - A Label object to display the title "DISCOUNT CIVILIZATION"
+     * - newButton: a button with text "New Game"
+     * - loadButton: a button with text "Load Game"
+     * - quitButton: a button with text "Quit"
+     * <p>
      * Note that the handlers of the buttons are set in the initHandlers() method in GameApplication
      */
     public Menu() {
         Label title = new Label("DISCOUNT CIVILIZATION");
-        Button newButton = new Button("New Game");
-        Button loadButton = new Button("Load Game");
-        Button quitButton = new Button("Quit");
+        newButton = new Button("New Game");
+        loadButton = new Button("Load Game");
+        quitButton = new Button("Quit");
 
         getChildren().addAll(title, newButton, loadButton, quitButton);
         setId("menu");

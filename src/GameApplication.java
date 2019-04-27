@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Random;
 
 public class GameApplication extends Application {
-
     Stage stage;
 
     // GameMap
@@ -49,7 +48,6 @@ public class GameApplication extends Application {
     }
 
     private class ComputerThread implements Runnable {
-
         private Player player;
 
         ComputerThread() {
@@ -61,8 +59,7 @@ public class GameApplication extends Application {
             List<Minister> readyMinisters = player.getReadyMinisters();
             for (Minister minister : readyMinisters) {
                 // TODO: implement a computer thread that makes random decisions
-
-                /**
+                /*
                  * Step 1:
                  * Choose 5 things randomly, from the player member variable
                  * 1. choose a random action number from 0 to 9
@@ -73,19 +70,10 @@ public class GameApplication extends Application {
                  *    chosen at (2), call this number troopNum
                  *
                  * You may find the methods getRandomInt() and chooseOneRandomly() useful
-                 *
                  */
 
-
-
-
-
-
-
-
-
                 Platform.runLater(() -> {
-                    /**
+                    /*
                      * Step2:
                      * 1. Call gameEngine.processPlayerCommand() method, using player, minister,
                      *    and the 5 randomly chosen items to fill the parameters.
@@ -94,20 +82,7 @@ public class GameApplication extends Application {
                      *    catch the TooPoorException and print the error message using infoBar.writeLog()
                      */
 
-
-
-
-
-
-
-
-
-
                     // Step 3: call the render() of gameCanvas method to update the Canvas.
-
-
-
-
 
                 });
 
@@ -115,18 +90,14 @@ public class GameApplication extends Application {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
-
                 }
             }
-
             Platform.runLater(GameApplication.this::endCurrentPlayerTurn);
         }
     }
 
-
     public void beginPlayerTurn(Player player) {
-
-        /**
+        /*
          * TODO: begin a player turn;
          * 1. Set currentPlayer to player
          * 2. Call the beginTurn() method for each minister of the player
@@ -144,20 +115,10 @@ public class GameApplication extends Application {
          *         5.2.3. call the start() method of the Thread object
          */
 
-
-
-
-
-
-
-
-
-
     }
 
     public void initHandlers() {
-
-        /**
+        /*
          * TODO: initialize all handlers
          * set the handlers in the menu and infoBar components to invoke the appropriate
          * methods of this class
@@ -174,18 +135,28 @@ public class GameApplication extends Application {
          *    of stage to menuScene
          * 6. Call the setSkipButtonHandler() method of infoBar with a handler that invokes
          *    the endCurrentPlayerTurn() method.
-         *
          */
 
+        // 1
+        menu.setNewGameHandler(e -> newGameHandler()); // Refer to textbook p. 627
 
+        // 2
+        menu.setLoadGameHandler(e -> loadGameHandler());
 
+        // 3
+        menu.setQuitHandler(e -> quitGameHandler());
 
+        // 4
+        infoBar.setGameActionHandler(this::gameActionHandler);
 
+        // 5
+        infoBar.setMenuButtonHandler(e -> stage.setScene(menuScene));
 
+        // 6
+        infoBar.setSkipButtonHandler(e -> endCurrentPlayerTurn());
     }
 
     public void newGameHandler() {
-
         GameMap gameMap = gameEngine.getMap();
         try {
             gameMap.loadPlayers("players.txt");
@@ -194,7 +165,7 @@ public class GameApplication extends Application {
             Platform.exit();
         }
 
-        /**
+        /*
          * TODO: complete the new game handler
          *
          * 1. Instantiate the gameCanvas object using gameMap and infoBar
@@ -212,22 +183,41 @@ public class GameApplication extends Application {
          *    in a List<> object using its get(i) method.
          */
 
+        // 1
+        gameCanvas = new GameCanvas(gameMap, infoBar);
 
+        // 2
+        gameCanvas.render();
 
+        // 3
+        infoBar.clearLog();
 
+        // 4
+        HBox hBox = new HBox(2);
+        hBox.getChildren().add(gameCanvas);
+        hBox.getChildren().add(infoBar);
 
+        // 5
+        Scene gameplayScene = new Scene(hBox);
 
+        // 6
+        gameplayScene.getStylesheets().add("style.css");
 
+        // 7
+        stage.setScene(gameplayScene);
+
+        // 8
+        beginPlayerTurn(gameMap.getPlayers().get(0));
     }
 
     public void endCurrentPlayerTurn() {
-/*
+        /*
         EndGame endGame = new EndGame(currentPlayer);
         endGame.setMenuButtonHandler(e -> stage.setScene(menuScene));
         Scene endGameScene = new Scene(endGame);
         endGameScene.getStylesheets().add("style.css");
         stage.setScene(endGameScene);
-*/
+        */
 
         currentPlayer.getCities().forEach(c -> infoBar.writeLog(currentPlayer, c.growAtTurnEnd()));
         currentPlayer.getCities().forEach(c -> infoBar.writeLog(currentPlayer, c.invokeRandomEvent(Math.random())));
@@ -252,12 +242,9 @@ public class GameApplication extends Application {
         } while (!nextPlayer.hasAnyCity());
 
         beginPlayerTurn(nextPlayer);
-
     }
 
-
     public void gameActionHandler(int actionNum, Minister selectedMinister, City selectedCity, City selectedNeighbor, Technology selectedTech, int troopNum) {
-
         try {
             if (selectedMinister.isReady()) {
                 String msg = gameEngine.processPlayerCommand(
@@ -286,7 +273,6 @@ public class GameApplication extends Application {
     }
 
     public void loadGameHandler() {
-
     }
 
     public void quitGameHandler() {
@@ -305,6 +291,4 @@ public class GameApplication extends Application {
     public static void main(String[] args) {
         launch();
     }
-
-
 }

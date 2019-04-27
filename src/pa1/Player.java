@@ -46,7 +46,6 @@ public class Player {
         technologies.add(new TradingTech());
         technologies.add(new ManufacturingTech());
 
-
         this.name = name;
         this.gold = gold;
         this.sciencePoint = science;
