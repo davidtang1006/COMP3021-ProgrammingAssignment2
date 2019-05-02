@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InfoBar extends VBox {
-
     private final GameMap gameMap;
 
     private final List<Button> buttons = new ArrayList<>();
@@ -58,11 +57,10 @@ public class InfoBar extends VBox {
 
     private Player currentPlayer;
 
-
     public InfoBar(GameMap gameMap) {
         this.gameMap = gameMap;
 
-        /**
+        /*
          * TODO: construct the info bar UI
          * The info bar is an extension of VBox with the following children.
          *  - infoGroup: an HBox of (playerName, playerResources) labels/texts
@@ -91,8 +89,8 @@ public class InfoBar extends VBox {
          *     The contents in cityListView, ministerListView and technologyListView will be added in the displayPlayer() method.
          *     The contents in neighborListView will be added in the onSelectedCityChangeHandler() method.
          *  4. Create a Label object with text "Enter number of troops (0)", call it lbSlider.
-         *  4. Initialize troopSlider using the slider returned by the createTroopSlider() method.
-         *  5. Add a listener to the value property of troopSlider that changes the number in lbSlider.
+         *  5. Initialize troopSlider using the slider returned by the createTroopSlider() method.
+         *  6. Add a listener to the value property of troopSlider that changes the number in lbSlider.
          *     For example, given a Label object "label" and a Slider object "slider",
          *     if we want to change the text in "label" when the value in "slider" changes,
          *     we can add a listener to the value property of "slider", i.e.,
@@ -100,44 +98,58 @@ public class InfoBar extends VBox {
          *         label.setText("The value of the slider is " + newVal);
          *     });
          *     Note that "newVal" is a Number object, you can convert it to an integer using its intValue() method.
-         *  6. Create the button group using the createActionButtonGroup() method.
-         *  7. Add infoGroup, all the labels created in step 2, all the ListView objects created in step 3,
-         *     lbSlider, troopSlider and the button group created at step 6
+         *  7. Create the button group using the createActionButtonGroup() method.
+         *  8. Add infoGroup, all the labels created in step 2, all the ListView objects created in step 3,
+         *     lbSlider, troopSlider and the button group created at step 7
          *     to be the children of this info bar.
          *     Hint: this info bar is an extension of VBox, so you can use getChildren().addAll(...)
-         *  8. Uncomment the four lines of code at the bottom of this constructor that add a listener to cityListView.
-         *     Note the four lines of code should be put after the code for previous 7 steps!!!
+         *  9. Uncomment the four lines of code at the bottom of this constructor that add a listener to cityListView.
+         *     Note the four lines of code should be put after the code for previous 8 steps!!!
          */
 
+        // 1
+        HBox infoGroup = new HBox(playerName, playerResources);
 
+        // 2
+        Label label1 = new Label("Cities");
+        Label label2 = new Label("Ministers");
+        Label label3 = new Label("Technologies");
+        Label label4 = new Label("Neighbors");
+        Label label5 = new Label("Logs");
 
+        // 3
+        cityListView = new ListView<>(cities);
+        ministerListView = new ListView<>(ministers);
+        technologyListView = new ListView<>(technologies);
+        neighborListView = new ListView<>(neighbors);
 
+        // 4
+        Label lbSlider = new Label("Enter number of troops (0)");
 
+        // 5
+        troopSlider = createTroopSlider();
 
+        // 6
+        troopSlider.valueProperty().addListener((ov, oldVal, newVal) ->
+                lbSlider.setText(String.format("Enter number of troops (%d)", newVal.intValue())));
 
+        // 7
+        Pane buttonGroup = createActionButtonGroup();
 
+        // 8
+        getChildren().addAll(infoGroup, label1, cityListView, label2, ministerListView,
+                label3, technologyListView, label4, neighborListView,
+                lbSlider, troopSlider, buttonGroup, label5, logListView);
 
-
-
-
-
-
-
-
-
-
-
-
-
-        // for Step 8
+        // For Step 9
         // Add a listener to cityListView so that the neighborListView updates its content
         // when the selected city is changed.
         // uncomment the following 4 lines when you start to implement this constructor.
-//        cityListView.getSelectionModel().selectedItemProperty().addListener((observable, oldVal, newVal) -> {
-//            if(oldVal != newVal && newVal != null){
-//                onSelectedCityChangeHandler(newVal);
-//            }
-//        });
+        cityListView.getSelectionModel().selectedItemProperty().addListener((observable, oldVal, newVal) -> {
+            if(oldVal != newVal && newVal != null){
+                onSelectedCityChangeHandler(newVal);
+            }
+        });
 
         // Set the ID to "info-bar" so that the style defined in "style.css" can
         // be applied to make this info bar better looking
@@ -145,7 +157,7 @@ public class InfoBar extends VBox {
     }
 
     private void onSelectedCityChangeHandler(City city) {
-        /**
+        /*
          * TODO: complete the on selected city changed handler
          * This method will be called when the selected item in the cityListView is changed
          * 1. Clear the contents in the observable list "neighbors" by calling its clear() method
@@ -158,24 +170,10 @@ public class InfoBar extends VBox {
          *    Hint: use the setValue() and setMax() method of troopSlider.
          */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
     private void actionButtonHandler(int actionNumber) {
-        /**
+        /*
          * TODO: complete the action button handler
          * This method will be invoked when one of the action buttons (buttons to select an action) is clicked
          *
@@ -187,16 +185,10 @@ public class InfoBar extends VBox {
          *
          */
 
-
-
-
-
-
-
     }
 
     public void displayPlayer(Player player) {
-        /**
+        /*
          * TODO: display a player in this info bar
          * 1. Set currentPlayer to player
          * 2. Set playerName to display the name of the player.
@@ -208,16 +200,24 @@ public class InfoBar extends VBox {
          *    e.g., cities.addAll(player.getCities())
          */
 
+        // 1
+        currentPlayer = player;
 
+        // 2
+        playerName.setText(player.getName());
+        playerResources.setText(String.format("%d golds   %d science   %d production",
+                player.getGold(), player.getSciencePoint(), player.getProductionPoint()));
 
+        // 3
+        cities.clear();
+        ministers.clear();
+        technologies.clear();
+        neighbors.clear();
 
-
-
-
-
-
-
-
+        // 4
+        cities.addAll(player.getCities());
+        ministers.addAll(player.getMinisters());
+        technologies.addAll(player.getTechnologies());
     }
 
     // Create the troop slider
@@ -235,7 +235,6 @@ public class InfoBar extends VBox {
 
     // Create the 3-column button group
     private Pane createActionButtonGroup() {
-
         VBox[] vBoxes = new VBox[3];
 
         buttons.add(new Button("Collect Tax"));
@@ -274,7 +273,7 @@ public class InfoBar extends VBox {
     }
 
     public void setDisableButtons(boolean isDisabled) {
-        /**
+        /*
          * TODO: disable/enable ALL buttons in this component
          *
          * The buttons includes those in this.buttons, skipButton and menuButton
@@ -282,19 +281,13 @@ public class InfoBar extends VBox {
          *       or enable a button using Button.setDisable(false)
          */
 
-
-
-
-
-
-
     }
 
     // select the city located at the given cell
     public void selectCell(Cell cell) {
-        for(City city: currentPlayer.getCities()) {
+        for (City city : currentPlayer.getCities()) {
             Cell location = gameMap.getCityLocation(city);
-            if(location.equals(cell)){
+            if (location.equals(cell)) {
                 cityListView.getSelectionModel().select(city);
             }
         }
@@ -307,7 +300,6 @@ public class InfoBar extends VBox {
     public void setMenuButtonHandler(EventHandler<ActionEvent> handler) {
         menuButton.setOnAction(handler);
     }
-
 
     /**
      * Write log to logListView

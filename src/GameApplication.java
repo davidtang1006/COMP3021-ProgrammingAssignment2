@@ -115,6 +115,26 @@ public class GameApplication extends Application {
          *         5.2.3. call the start() method of the Thread object
          */
 
+        // 1
+        currentPlayer = player;
+
+        // 2
+        for (Minister minister : player.getMinisters()) {
+            minister.beginTurn();
+        }
+
+        // 3
+        if (player.isHuman()) {
+            // 4
+            infoBar.setDisableButtons(false); // 4.1
+            infoBar.displayPlayer(player); // 4.2
+        } else {
+            // 5
+            infoBar.setDisableButtons(true); // 5.1
+            Runnable computerThread = new ComputerThread(); // 5.2.1
+            Thread thread = new Thread(computerThread); // 5.2.2
+            thread.start(); // 5.2.3
+        }
     }
 
     public void initHandlers() {
