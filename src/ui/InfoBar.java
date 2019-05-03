@@ -108,7 +108,8 @@ public class InfoBar extends VBox {
          */
 
         // 1
-        HBox infoGroup = new HBox(playerName, playerResources);
+        HBox infoGroup = new HBox(15, playerName, playerResources);
+        infoGroup.setAlignment(Pos.CENTER_LEFT);
 
         // 2
         Label label1 = new Label("Cities");
@@ -146,7 +147,7 @@ public class InfoBar extends VBox {
         // when the selected city is changed.
         // uncomment the following 4 lines when you start to implement this constructor.
         cityListView.getSelectionModel().selectedItemProperty().addListener((observable, oldVal, newVal) -> {
-            if(oldVal != newVal && newVal != null){
+            if (oldVal != newVal && newVal != null) {
                 onSelectedCityChangeHandler(newVal);
             }
         });

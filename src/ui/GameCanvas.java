@@ -133,7 +133,7 @@ public class GameCanvas extends StackPane {
 
         // 2
         graphicsContexts = canvasLayers[TEXT_LAYER].getGraphicsContext2D();
-        graphicsContexts.strokeText(city.getName(), cityX + Math.round((float)CELL_WIDTH / 4), cityY);
+        graphicsContexts.strokeText(city.getName(), cityX + Math.round((float) CELL_WIDTH / 4), cityY);
 
         // 3
         graphicsContexts = canvasLayers[FLAG_LAYER].getGraphicsContext2D();

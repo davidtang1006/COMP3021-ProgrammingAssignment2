@@ -126,7 +126,7 @@ public class GameApplication extends Application {
 
     public void beginPlayerTurn(Player player) {
         /*
-         * TODO: begin a player turn;
+         * TODO: begin a player turn
          * 1. Set currentPlayer to player
          * 2. Call the beginTurn() method for each minister of the player
          *    Hint: you can use the getMinisters() method of the Player class to get all ministers of a player

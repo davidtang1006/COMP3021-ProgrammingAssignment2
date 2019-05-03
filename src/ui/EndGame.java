@@ -29,6 +29,8 @@ public class EndGame extends VBox {
         winnerText = new Text(winner.getName() + " Wins the Game");
         button = new Button("Return to Main Menu");
 
+        getChildren().addAll(lbTitle, winnerText, button);
+
         // set the IDs of winnerText and this end game VBox so that the styles defined in "style.css"
         // can be applied to make the end game scene better looking.
         winnerText.setId("winner");
