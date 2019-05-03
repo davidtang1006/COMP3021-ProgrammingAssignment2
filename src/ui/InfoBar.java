@@ -170,6 +170,15 @@ public class InfoBar extends VBox {
          *    Hint: use the setValue() and setMax() method of troopSlider.
          */
 
+        // 1
+        neighbors.clear();
+
+        // 2
+        neighbors.addAll(gameMap.getNeighboringCities(city));
+
+        // 3
+        troopSlider.setValue(0);
+        troopSlider.setMax(city.getTroops());
     }
 
     private void actionButtonHandler(int actionNumber) {
