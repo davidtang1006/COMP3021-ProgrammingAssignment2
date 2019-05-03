@@ -72,6 +72,26 @@ public class GameApplication extends Application {
                  * You may find the methods getRandomInt() and chooseOneRandomly() useful
                  */
 
+                // 1
+                int actionNumber = getRandomInt(10);
+
+                // 2
+                City city = chooseOneRandomly(player.getCities());
+
+                // 3
+                City attackTarget = chooseOneRandomly(gameEngine.getMap().getNeighboringCities(city));
+
+                // 4
+                Technology technology = chooseOneRandomly(player.getTechnologies());
+
+                // 5
+                int troopNum;
+                if (city != null) {
+                    troopNum = getRandomInt(city.getTroops() + 1);
+                } else {
+                    troopNum = 0;
+                }
+
                 Platform.runLater(() -> {
                     /*
                      * Step2:
@@ -81,9 +101,17 @@ public class GameApplication extends Application {
                      * 3. Since gameEngine.processPlayerCommand() may throw a TooPoorException,
                      *    catch the TooPoorException and print the error message using infoBar.writeLog()
                      */
+                    try {
+                        // 1, 2
+                        infoBar.writeLog(player, gameEngine.processPlayerCommand(actionNumber, player,
+                                minister, city, attackTarget, technology, troopNum));
+                    } catch (TooPoorException e) {
+                        // 3
+                        infoBar.writeLog(player, e.getMessage());
+                    }
 
                     // Step 3: call the render() of gameCanvas method to update the Canvas.
-
+                    gameCanvas.render();
                 });
 
                 // Simulates human decision making

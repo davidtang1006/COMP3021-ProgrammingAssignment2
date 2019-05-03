@@ -10,33 +10,24 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import pa1.Player;
 
-
 public class EndGame extends VBox {
-
     Button button;
     Label lbTitle;
     Text winnerText;
 
     public EndGame(Player winner) {
-        /**
+        /*
          * TODO: construct the End Game pane
          * This class is an extension of VBox with the following children:
          *  - lbTitle: A Label object that displays the title "Game Ended"
          *  - winnerText: A Text object that displays the message winner.getName() + " Wins the Game"
          *  - A Button object with the text "Return to Main Menu".
          *    When it is clicked, the menu is shown.
-         *    Its handler is set in the initHandlers() method in GameApplication
-         *
+         *    Its handler is set in the endCurrentPlayerTurn() method in GameApplication
          */
-
-
-
-
-
-
-
-
-
+        lbTitle = new Label("Game Ended");
+        winnerText = new Text(winner.getName() + " Wins the Game");
+        button = new Button("Return to Main Menu");
 
         // set the IDs of winnerText and this end game VBox so that the styles defined in "style.css"
         // can be applied to make the end game scene better looking.
