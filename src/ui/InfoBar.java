@@ -191,9 +191,20 @@ public class InfoBar extends VBox {
          * 2. Get the value of troopSlider
          * 3. Invoke the handle() method of the gameActionHandler interface
          *    using actionNumber and the variables obtained in step 1 and 2.
-         *
          */
 
+        // 1
+        City selectedCity = cityListView.getSelectionModel().getSelectedItem();
+        Minister selectedMinister = ministerListView.getSelectionModel().getSelectedItem();
+        Technology selectedTechnology = technologyListView.getSelectionModel().getSelectedItem();
+        City selectedNeighbor = neighborListView.getSelectionModel().getSelectedItem();
+
+        // 2
+        int troopSliderValue = (int) Math.round(troopSlider.getValue());
+
+        // 3
+        gameActionHandler.handle(actionNumber,
+                selectedMinister, selectedCity, selectedNeighbor, selectedTechnology, troopSliderValue);
     }
 
     public void displayPlayer(Player player) {
@@ -289,7 +300,11 @@ public class InfoBar extends VBox {
          * Hint: you can disable a button using Button.setDisable(true)
          *       or enable a button using Button.setDisable(false)
          */
-
+        for (Button button : this.buttons) {
+            button.setDisable(isDisabled);
+        }
+        skipButton.setDisable(isDisabled);
+        menuButton.setDisable(isDisabled);
     }
 
     // select the city located at the given cell
